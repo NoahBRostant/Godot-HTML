@@ -14,6 +14,9 @@ void HtmlRect::_bind_methods()
 	ClassDB::bind_method(D_METHOD("get_index"), &HtmlRect::get_index);
 	ClassDB::bind_method(D_METHOD("set_index", "p_index"), &HtmlRect::set_index);
 	ClassDB::add_property(get_class_static(), PropertyInfo(Variant::STRING, "index_path"), "set_index", "get_index");
+	ClassDB::bind_method(D_METHOD("get_html_source"), &HtmlRect::get_html_source);
+	ClassDB::bind_method(D_METHOD("set_html_source", "p_html_source"), &HtmlRect::set_html_source);
+	ClassDB::add_property(get_class_static(), PropertyInfo(Variant::STRING, "html_source"), "set_html_source", "get_html_source");
 
 	GDVIRTUAL_BIND(_on_window_ready, "url");
 }
@@ -59,6 +62,17 @@ void HtmlRect::StoreGlobalObject(JSContextRef context, Dictionary obj)
 
 void HtmlRect::LoadIndex(RefPtr<View> view)
 {
+    if(!view)
+    {
+        return;
+    }
+
+    if(!html_source.is_empty())
+    {
+        view->LoadHTML(html_source.utf8().get_data());
+        return;
+    }
+
     if(index_path.is_empty()) {
         view->LoadHTML("<h1>Placeholder Text</h1>");
     } else
@@ -84,6 +98,17 @@ void HtmlRect::set_index(const String p_index)
 godot::String HtmlRect::get_index() const
 {
 	return index_path;
+}
+
+void HtmlRect::set_html_source(const String p_html_source)
+{
+    html_source = p_html_source;
+    LoadIndex(GetView());
+}
+
+godot::String HtmlRect::get_html_source() const
+{
+    return html_source;
 }
 
 Dictionary HtmlRect::call_on_window_ready(const String &url)
