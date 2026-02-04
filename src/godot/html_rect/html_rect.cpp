@@ -62,18 +62,9 @@ void HtmlRect::StoreGlobalObject(JSContextRef context, Dictionary obj)
 
 void HtmlRect::LoadIndex(RefPtr<View> view)
 {
-    if(!view)
-    {
-        return;
-    }
-
-    if(!html_source.is_empty())
-    {
+    if(!html_source.is_empty()) {
         view->LoadHTML(html_source.utf8().get_data());
-        return;
-    }
-
-    if(index_path.is_empty()) {
+    } else if(index_path.is_empty()) {
         view->LoadHTML("<h1>Placeholder Text</h1>");
     } else
     {
@@ -100,7 +91,7 @@ godot::String HtmlRect::get_index() const
 	return index_path;
 }
 
-void HtmlRect::set_html_source(const String p_html_source)
+void HtmlRect::set_html_source(const String &p_html_source)
 {
     html_source = p_html_source;
     LoadIndex(GetView());

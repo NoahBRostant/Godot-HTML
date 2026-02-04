@@ -35,7 +35,7 @@ namespace godot {
 
             void set_index(const String p_index);
             String get_index() const;
-            void set_html_source(const String p_html_source);
+            void set_html_source(const String &p_html_source);
             String get_html_source() const;
 
             void OnWindowObjectReady(ultralight::View *caller, uint64_t frame_id, bool is_main_frame, const ultralight::String &url) override;
